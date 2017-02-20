@@ -1,1 +1,1 @@
-# soen487isfun
+Welcome to Gran Turismo the toursitic app
