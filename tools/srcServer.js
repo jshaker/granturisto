@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
 import open from 'open';
+import placesautocomplete from '../api/placesautocomplete';
 
 /* eslint-disable no-console */
 
@@ -17,9 +18,12 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', function(req, res) {
+app.get('/placesautocomplete/:searchText', placesautocomplete);
+
+app.get('/', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
+
 
 app.listen(port, function(err) {
   if (err) {
