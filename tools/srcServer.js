@@ -1,11 +1,11 @@
+/* eslint-disable no-console */
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
 import open from 'open';
-import placesautocomplete from '../api/placesautocomplete';
-
-/* eslint-disable no-console */
+import getPlaces from '../api/getPlaces';
+import getTrip from '../api/getTrip';
 
 const port = 3000;
 const app = express();
@@ -18,7 +18,9 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/placesautocomplete/:searchText', placesautocomplete);
+app.get('/getPlaces/:searchText', getPlaces);
+
+app.post('/getTrip', getTrip);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));

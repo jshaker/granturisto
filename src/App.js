@@ -2,6 +2,7 @@ import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
   container: {
@@ -14,11 +15,18 @@ class App extends React.Component {
   constructor(props,context){
     super(props,context);
     this.state = {
-      dataSource: []
+      dataSource: [],
+      userLocation: null,
+      loading: false
     };
-
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
+    this.onNewRequest = this.onNewRequest.bind(this);
+  }
 
+  componentDidMount(){
+    navigator.geolocation.getCurrentPosition(function(location){
+      this.setState({userLocation: location.coords});
+    }.bind(this));
   }
 
   handleUpdateInput(text){
@@ -26,17 +34,29 @@ class App extends React.Component {
       return;
     }
     $.ajax({
-      url: `http://localhost:3000/placesautocomplete/${text}`,
+      url: `http://localhost:3000/getPlaces/${text}`,
       type: 'GET'
-    }).then(function(data){
-      this.setState({dataSource: data});
+    }).then(function(response){
+      this.setState({dataSource: response});
     }.bind(this));
 
   }
 
   onNewRequest(chosenRequest){
-    console.log("test",chosenRequest.obj);
-    return;
+    if(typeof chosenRequest !== "object"){
+      return;
+    }
+    this.setState({loading: true});
+    $.ajax({
+      url: 'http://localhost:3000/getTrip',
+      type: 'POST',
+      data: {userLocation: this.state.userLocation, destination: chosenRequest.value}
+    }).then(function(response){
+      console.log("response",response);
+      setTimeout(function(){
+        this.setState({loading:false});
+      }.bind(this), 1000);
+    }.bind(this));
   }
 
   render() {
@@ -44,8 +64,7 @@ class App extends React.Component {
     const suggestions = this.state.dataSource.map(function(suggestion){
       return {
         text: suggestion.description,
-        value: suggestion.description,
-        obj: suggestion
+        value: suggestion.description
       };
     });
 
@@ -58,10 +77,15 @@ class App extends React.Component {
             filter={function(searchText, key){
               return true;
             }}
+            maxSearchResults={10}
             dataSource={suggestions}
             onUpdateInput={this.handleUpdateInput}
             onNewRequest={this.onNewRequest}
+            disabled={!this.state.userLocation}
           />
+          <div>
+            {this.state.loading ? <CircularProgress size={80} thickness={5} /> : null}
+          </div>
         </div>
       </MuiThemeProvider>
     );
