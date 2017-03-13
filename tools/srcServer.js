@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import path from 'path';
 import config from '../webpack.config.dev';
 import open from 'open';
+import bodyParser from 'body-parser';
 import getPlaces from '../api/getPlaces';
 import getTrip from '../api/getTrip';
 
@@ -18,7 +19,12 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/getPlaces/:searchText', getPlaces);
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+app.get('/getPlaces', getPlaces);
 
 app.post('/getTrip', getTrip);
 

@@ -34,8 +34,11 @@ class App extends React.Component {
       return;
     }
     $.ajax({
-      url: `http://localhost:3000/getPlaces/${text}`,
-      type: 'GET'
+      url: 'http://localhost:3000/getPlaces',
+      type: 'GET',
+      data: {
+        search: text
+      }
     }).then(function(response){
       this.setState({dataSource: response});
     }.bind(this));
