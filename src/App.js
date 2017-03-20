@@ -55,7 +55,6 @@ class App extends React.Component {
       type: 'POST',
       data: {userLocation: this.state.userLocation, destination: chosenRequest.value}
     }).then(function(response){
-      console.log("response",response);
       setTimeout(function(){
         this.setState({loading:false});
       }.bind(this), 1000);
