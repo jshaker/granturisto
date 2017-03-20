@@ -17,9 +17,7 @@ class App extends React.Component {
     this.state = {
       dataSource: [],
       userLocation: null,
-      loading: false,
-      nearestAirport: null,
-      airportRoute: null
+      loading: false
     };
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.onNewRequest = this.onNewRequest.bind(this);
@@ -60,38 +58,6 @@ class App extends React.Component {
       setTimeout(function(){
         this.setState({loading:false});
       }.bind(this), 1000);
-    }.bind(this));
-
-    $.ajax({
-      url: 'http://localhost:3000/getNearestAirport',
-      type: 'GET',
-      data: {lat: this.state.userLocation.latitude, long: this.state.userLocation.longitude}
-    }).then(function(response){
-
-      let airport = {};
-      airport.lat = response.geometry.location.lat;
-      airport.long = response.geometry.location.lng;
-      airport.name = response.name;
-      airport.place_id = response.place_id;
-      this.setState({
-        nearestAirport: airport
-      });
-
-      $.ajax({
-        url: 'http://localhost:3000/getDirectionsToAirport',
-        type: 'GET',
-        data: {
-          userLat: this.state.userLocation.latitude,
-          userLong: this.state.userLocation.longitude,
-          airportLat: this.state.nearestAirport.lat,
-          airportLong: this.state.nearestAirport.long
-        }
-      }).then(function(response){
-        this.setState({
-          airportRoute: response
-        });
-      }.bind(this));
-
     }.bind(this));
   }
 
