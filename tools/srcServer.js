@@ -7,8 +7,8 @@ import open from 'open';
 import bodyParser from 'body-parser';
 import getPlaces from '../api/getPlaces';
 import getTrip from '../api/getTrip';
-import getNearestAirport from '../api/getNearestAirport'
-import getDirectionsToAirport from '../api/getDirectionsToAirport'
+import getNearestAirport from '../api/getNearestAirport';
+import getDirectionsToAirport from '../api/getDirectionsToAirport';
 
 const port = 3000;
 const app = express();
@@ -30,9 +30,9 @@ app.get('/getPlaces', getPlaces);
 
 app.post('/getTrip', getTrip);
 
-app.post('/getNearestAirport', getNearestAirport);
+app.get('/getNearestAirport', getNearestAirport);
 
-app.post('/getDirectionsToAirport', getDirectionsToAirport);
+app.get('/getDirectionsToAirport', getDirectionsToAirport);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));

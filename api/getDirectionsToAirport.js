@@ -1,18 +1,21 @@
-import https from 'https';
+import http from 'http';
 
 export default function(req,res){
-  console.log(req.body.airport);
+  console.log("User location:");
+  console.log(req.query.userLat);
+  console.log(req.query.userLong);
+  console.log("Airport location:");
+  console.log(req.query.airportLat);
+  console.log(req.query.airportLong);
 
-  https.get(`http://free.rome2rio.com/api/1.4/json/Search?key=aHIsdxZq&oPos=${req.body.userLocation.latitude},${req.body.userLocation.longitude}&dPos=${req.body.airport.geometry.location.lat},${req.body.airport.geometry.location.lng}`, function(response){
+  http.get(`http://free.rome2rio.com/api/1.4/json/Search?key=aHIsdxZq&oPos=${req.query.userLat},${req.query.userLong}&dPos=${req.query.airportLat},${req.query.airportLong}`, function(response){
 
     var body = '';
     response.on('data', function(d) {
       body += d;
-      console.log(body);
     });
     response.on('end', function() {
       var parsed = JSON.parse(body);
-      console.log(parsed);
       res.send(parsed);
     });
   });
