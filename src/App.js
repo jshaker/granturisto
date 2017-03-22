@@ -3,10 +3,17 @@ import AutoComplete from 'material-ui/AutoComplete';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
 import CircularProgress from 'material-ui/CircularProgress';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-const style = {
+const styles = {
   container: {
     textAlign: 'center'
+  },
+  headline: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
   }
 };
 
@@ -17,10 +24,12 @@ class App extends React.Component {
     this.state = {
       dataSource: [],
       userLocation: null,
-      loading: false
+      loading: false,
+      tabIndex: 'Airport Directions',
     };
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.onNewRequest = this.onNewRequest.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentDidMount(){
@@ -28,6 +37,12 @@ class App extends React.Component {
       this.setState({userLocation: location.coords});
     }.bind(this));
   }
+
+  handleTabChange(tabIndex){
+    this.setState({
+      tabIndex: tabIndex,
+    });
+  };
 
   handleUpdateInput(text){
     if(text.trim() === ""){
@@ -72,7 +87,7 @@ class App extends React.Component {
 
     return (
       <MuiThemeProvider>
-        <div style={style.container}>
+        <div style={styles.container}>
           <h1>Welcome to Gran Turisto</h1>
           <AutoComplete
             floatingLabelText="Search for your destination"
@@ -87,6 +102,42 @@ class App extends React.Component {
           />
           <div>
             {this.state.loading ? <CircularProgress size={80} thickness={5} /> : null}
+          </div>
+          <div>
+            <Tabs value={this.state.tabIndex} onChange={this.handleTabChange}>
+              <Tab label="Airport Directions" value="Airport Directions">
+                <div>
+                  <h2 style={styles.headline}>Airport Directions</h2>
+                  <p>
+                    TODO
+                  </p>
+                </div>
+              </Tab>
+              <Tab label="Flights" value="Flights">
+                <div>
+                  <h2 style={styles.headline}>Flights</h2>
+                  <p>
+                    TODO
+                  </p>
+                </div>
+              </Tab>
+              <Tab label="Hotels" value="Hotels">
+                <div>
+                  <h2 style={styles.headline}>Hotels</h2>
+                  <p>
+                    TODO
+                  </p>
+                </div>
+              </Tab>
+              <Tab label="Weather" value="Weather">
+                <div>
+                  <h2 style={styles.headline}>Weather</h2>
+                  <p>
+                    TODO
+                  </p>
+                </div>
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </MuiThemeProvider>
