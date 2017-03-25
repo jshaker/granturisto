@@ -13,7 +13,7 @@ const styles = {
     fontSize: 24,
     paddingTop: 16,
     marginBottom: 12,
-    fontWeight: 400,
+    fontWeight: 400
   }
 };
 
@@ -25,7 +25,7 @@ class App extends React.Component {
       dataSource: [],
       userLocation: null,
       loading: false,
-      tabIndex: 'Airport Directions',
+      tabIndex: 'Airport Directions'
     };
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.onNewRequest = this.onNewRequest.bind(this);
@@ -40,9 +40,9 @@ class App extends React.Component {
 
   handleTabChange(tabIndex){
     this.setState({
-      tabIndex: tabIndex,
+      tabIndex: tabIndex
     });
-  };
+  }
 
   handleUpdateInput(text){
     if(text.trim() === ""){
