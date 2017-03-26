@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
 import CircularProgress from 'material-ui/CircularProgress';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import FontIcon from 'material-ui/FontIcon';
 
 const styles = {
   container: {
@@ -25,11 +26,13 @@ class App extends React.Component {
       dataSource: [],
       userLocation: null,
       loading: false,
-      tabIndex: 'Airport Directions'
+      tabIndex: 'Airport Directions',
+      apiResponse: null
     };
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.onNewRequest = this.onNewRequest.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.clearData = this.clearData.bind(this);
   }
 
   componentDidMount(){
@@ -71,12 +74,73 @@ class App extends React.Component {
       data: {userLocation: this.state.userLocation, destination: chosenRequest.value}
     }).then(function(response){
       setTimeout(function(){
-        this.setState({loading:false});
+        this.setState({loading:false, apiResponse: response});
       }.bind(this), 1000);
     }.bind(this));
   }
 
+  clearData(){
+    this.setState({apiResponse: null});
+  }
+
   render() {
+    if(this.state.apiResponse){
+      return (
+        <MuiThemeProvider>
+          <Tabs value={this.state.tabIndex} onChange={this.handleTabChange}>
+            <Tab label="Airport Directions"
+                 value="Airport Directions"
+                 icon={<FontIcon className="material-icons">directions</FontIcon>}
+            >
+              <div>
+                <h2 style={styles.headline}>Airport Directions</h2>
+                <p>
+                  TODO
+                </p>
+              </div>
+            </Tab>
+            <Tab label="Flights"
+                 value="Flights"
+                 icon={<FontIcon className="material-icons">flight</FontIcon>}
+            >
+              <div>
+                <h2 style={styles.headline}>Flights</h2>
+                <p>
+                  TODO
+                </p>
+              </div>
+            </Tab>
+            <Tab label="Hotels"
+                 value="Hotels"
+                 icon={<FontIcon className="material-icons">hotel</FontIcon>}
+            >
+              <div>
+                <h2 style={styles.headline}>Hotels</h2>
+                <p>
+                  TODO
+                </p>
+              </div>
+            </Tab>
+            <Tab label="Weather"
+                 value="Weather"
+                 icon={<FontIcon className="material-icons">wb_sunny</FontIcon>}
+            >
+              <div>
+                <h2 style={styles.headline}>Weather</h2>
+                <p>
+                  TODO
+                </p>
+              </div>
+            </Tab>
+            <Tab label="New Search"
+                 value="Close"
+                 onActive={this.clearData}
+                 icon={<FontIcon className="material-icons">search</FontIcon>}
+            />
+          </Tabs>
+        </MuiThemeProvider>
+      );
+    }
 
     const suggestions = this.state.dataSource.map(function(suggestion){
       return {
@@ -84,7 +148,6 @@ class App extends React.Component {
         value: suggestion.description
       };
     });
-
     return (
       <MuiThemeProvider>
         <div style={styles.container}>
@@ -102,42 +165,6 @@ class App extends React.Component {
           />
           <div>
             {this.state.loading ? <CircularProgress size={80} thickness={5} /> : null}
-          </div>
-          <div>
-            <Tabs value={this.state.tabIndex} onChange={this.handleTabChange}>
-              <Tab label="Airport Directions" value="Airport Directions">
-                <div>
-                  <h2 style={styles.headline}>Airport Directions</h2>
-                  <p>
-                    TODO
-                  </p>
-                </div>
-              </Tab>
-              <Tab label="Flights" value="Flights">
-                <div>
-                  <h2 style={styles.headline}>Flights</h2>
-                  <p>
-                    TODO
-                  </p>
-                </div>
-              </Tab>
-              <Tab label="Hotels" value="Hotels">
-                <div>
-                  <h2 style={styles.headline}>Hotels</h2>
-                  <p>
-                    TODO
-                  </p>
-                </div>
-              </Tab>
-              <Tab label="Weather" value="Weather">
-                <div>
-                  <h2 style={styles.headline}>Weather</h2>
-                  <p>
-                    TODO
-                  </p>
-                </div>
-              </Tab>
-            </Tabs>
           </div>
         </div>
       </MuiThemeProvider>
