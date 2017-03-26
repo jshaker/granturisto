@@ -71,7 +71,7 @@ class App extends React.Component {
     $.ajax({
       url: 'http://localhost:3000/getTrip',
       type: 'POST',
-      data: {userLocation: this.state.userLocation, destination: chosenRequest.value}
+      data: {userLocation: this.state.userLocation, destination: chosenRequest.place_id}
     }).then(function(response){
       setTimeout(function(){
         this.setState({loading:false, apiResponse: response});
@@ -145,7 +145,8 @@ class App extends React.Component {
     const suggestions = this.state.dataSource.map(function(suggestion){
       return {
         text: suggestion.description,
-        value: suggestion.description
+        value: suggestion.description,
+        place_id: suggestion.place_id
       };
     });
     return (
