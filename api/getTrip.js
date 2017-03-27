@@ -1,10 +1,12 @@
 import getNearestAirport from './getNearestAirport';
 import getDirectionsToAirport from './getDirectionsToAirport';
 import getDestination from './getDestination';
+import getFlights from './getFlights';
 
 export default function (req, res) {
   const {latitude, longitude} = req.body.userLocation;
   const nearestAirportReq = {latitude, longitude};
+  const {destinationPlace} = req.body.destination;
 
   let originPromise = getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
 
