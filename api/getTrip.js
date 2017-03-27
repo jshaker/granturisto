@@ -33,31 +33,31 @@ export default function (req, res) {
     });
   });
 
-  let destinationPromise = getDestination(req.body.destination).then(function (destination) {
-    let nearestAirportReq = {
-      latitude: destination.geometry.location.lat,
-      longitude: destination.geometry.location.lng
-    };
+  // let destinationPromise = getDestination(req.body.destination).then(function (destination) {
+  //   let nearestAirportReq = {
+  //     latitude: destination.geometry.location.lat,
+  //     longitude: destination.geometry.location.lng
+  //   };
+  //
+  //   return getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
+  //     return {
+  //       name: destination.name,
+  //       location: {
+  //         latitude: nearestAirportReq.latitude,
+  //         longitude: nearestAirportReq.longitude,
+  //       },
+  //       airport: {
+  //         location: {
+  //           latitude: nearestAirport.geometry.location.lat,
+  //           longitude: nearestAirport.geometry.location.lng
+  //         },
+  //         name: nearestAirport.name
+  //       }
+  //     };
+  //   });
+  // });
 
-    return getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
-      return {
-        name: destination.name,
-        location: {
-          latitude: nearestAirportReq.latitude,
-          longitude: nearestAirportReq.longitude,
-        },
-        airport: {
-          location: {
-            latitude: nearestAirport.geometry.location.lat,
-            longitude: nearestAirport.geometry.location.lng
-          },
-          name: nearestAirport.name
-        }
-      };
-    });
-  });
-
-  Promise.all([originPromise, destinationPromise]).then((results) => {
+  Promise.all([originPromise]).then((results) => {
     let result = {
       origin: results[0],
       destination: results[1]
