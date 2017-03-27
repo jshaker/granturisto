@@ -1,8 +1,8 @@
-import http from 'http';
+import https from 'https';
 
 export default function({userLatitude,userLongitude,airportLatitude,airportLongitude}){
   return new Promise(function(resolve,reject){
-    var req = http.get(`http://free.rome2rio.com/api/1.4/json/Search?key=aHIsdxZq&oPos=${userLatitude},${userLongitude}&dPos=${airportLatitude},${airportLongitude}`, function(response){
+    var req = https.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${airportLatitude},${airportLongitude}&key=AIzaSyCYD-XqbdWlH7HhQs1-DvgG3KTvS8faZ6E`, function(response){
       var body = '';
       response.on('data', function(d) {
         body += d;
@@ -15,7 +15,12 @@ export default function({userLatitude,userLongitude,airportLatitude,airportLongi
         catch(e){
           reject(e);
         }
-        resolve(parsed);
+        if(parsed.routes && parsed.routes.length > 0 && parsed.routes[0].legs && parsed.routes[0].legs.length > 0 && parsed.routes[0].legs[0].steps){
+          resolve(parsed.routes[0].legs[0].steps);
+        }
+        else{
+          resolve([]);
+        }
       });
     });
     req.on('error', function(err) {
