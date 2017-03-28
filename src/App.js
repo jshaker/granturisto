@@ -120,6 +120,17 @@ class App extends React.Component {
                 </p>
               </div>
             </Tab>
+            <Tab label="Touristic Attractions"
+                 value="Touristic Attractions"
+                 icon={<FontIcon className="material-icons">account_balance</FontIcon>}
+            >
+              <div>
+                <h2 style={styles.headline}>Touristic Attractions</h2>
+                <p>
+                  TODO
+                </p>
+              </div>
+            </Tab>
             <Tab label="Weather"
                  value="Weather"
                  icon={<FontIcon className="material-icons">wb_sunny</FontIcon>}
