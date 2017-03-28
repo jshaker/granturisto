@@ -17,23 +17,8 @@ export default function (req, res) {
       airportLongitude: nearestAirport.geometry.location.lng
     };
 
-    console.log("nearestAirport",nearestAirport);
-
     return getDirectionsToAirport(directionsReq).then(function (airportDirections) {
-      return {
-        location: {
-          latitude: directionsReq.userLatitude,
-          longitude: directionsReq.userLongitude
-        },
-        airport: {
-          name: nearestAirport.name,
-          location: {
-            latitude: directionsReq.airportLatitude,
-            longitude: directionsReq.airportLongitude
-          },
-          routes: airportDirections
-        }
-      };
+      return airportDirections
     });
   });
 
@@ -41,37 +26,12 @@ export default function (req, res) {
     return getFlights({originIATA,destinationIATA});
   });
 
-  // let destinationPromise = getDestination(req.body.destination).then(function (destination) {
-  //   let nearestAirportReq = {
-  //     latitude: destination.geometry.location.lat,
-  //     longitude: destination.geometry.location.lng
-  //   };
-  //
-  //   return getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
-  //     return {
-  //       name: destination.name,
-  //       location: {
-  //         latitude: nearestAirportReq.latitude,
-  //         longitude: nearestAirportReq.longitude,
-  //       },
-  //       airport: {
-  //         location: {
-  //           latitude: nearestAirport.geometry.location.lat,
-  //           longitude: nearestAirport.geometry.location.lng
-  //         },
-  //         name: nearestAirport.name
-  //       }
-  //     };
-  //   });
-  // });
-
   Promise.all([originPromise,flightsPromise]).then((results) => {
     let result = {
-      origin: results[0],
+      directions: results[0],
       flights: results[1]
     };
-
-    console.log(result);
+    console.log("result",result);
     res.send(result);
   });
 }

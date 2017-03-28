@@ -18,6 +18,7 @@ const styles = {
   }
 };
 
+
 class App extends React.Component {
 
   constructor(props,context){
@@ -73,6 +74,7 @@ class App extends React.Component {
       type: 'POST',
       data: {userLocation: this.state.userLocation, destination: chosenRequest.obj}
     }).then(function(response){
+      console.log("response",response);
       setTimeout(function(){
         this.setState({loading:false, apiResponse: response});
       }.bind(this), 1000);
@@ -84,6 +86,7 @@ class App extends React.Component {
   }
 
   render() {
+
     if(this.state.apiResponse){
       return (
         <MuiThemeProvider>
@@ -93,10 +96,6 @@ class App extends React.Component {
                  icon={<FontIcon className="material-icons">directions</FontIcon>}
             >
               <div>
-                <h2 style={styles.headline}>Airport Directions</h2>
-                <p>
-                  TODO
-                </p>
               </div>
             </Tab>
             <Tab label="Flights"
