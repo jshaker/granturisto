@@ -2,11 +2,13 @@ import getNearestAirport from './getNearestAirport';
 import getDirectionsToAirport from './getDirectionsToAirport';
 import getNearestAirportIATA from './getNearestAirportIATA';
 import getFlights from './getFlights';
+import getTouristAttractions from './getTouristAttractions';
 
 export default function (req, res) {
   const {latitude, longitude} = req.body.userLocation;
   const nearestAirportReq = {latitude, longitude};
   const destinationIATA = req.body.destination.iata;
+  const {destinationLatitude, destinationLongtitude} = req.body.destination;
 
   let originPromise = getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
 
