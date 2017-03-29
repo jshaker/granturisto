@@ -5,6 +5,8 @@ import $ from 'jquery';
 import CircularProgress from 'material-ui/CircularProgress';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 const styles = {
   container: {
@@ -28,7 +30,8 @@ class App extends React.Component {
       userLocation: null,
       loading: false,
       tabIndex: 'Airport Directions',
-      apiResponse: null
+      apiResponse: null,
+      directions: null
     };
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.onNewRequest = this.onNewRequest.bind(this);
@@ -76,7 +79,8 @@ class App extends React.Component {
     }).then(function(response){
       console.log("response",response);
       setTimeout(function(){
-        this.setState({loading:false, apiResponse: response});
+        this.setState({loading:false, apiResponse: response, directions: response.directions});
+        console.log(this.state.directions)
       }.bind(this), 1000);
     }.bind(this));
   }
@@ -86,7 +90,6 @@ class App extends React.Component {
   }
 
   render() {
-
     if(this.state.apiResponse){
       return (
         <MuiThemeProvider>
@@ -95,7 +98,19 @@ class App extends React.Component {
                  value="Airport Directions"
                  icon={<FontIcon className="material-icons">directions</FontIcon>}
             >
-              <div>
+              <div style={{marginLeft:200, marginRight:200}}>
+                <List>
+                  {this.state.directions.map((directions) =>
+                    <div>
+                    <ListItem primaryText={directions.html_instructions.replace(/<(?:.|\n)*?>/gm, '')} secondaryText={
+                      <p>
+                        <span style={{color: '#1976D2'}}>{directions.distance.text}</span>
+                      </p>
+                    } />
+                    <Divider />
+                    </div>
+                  )}
+                </List>
               </div>
             </Tab>
             <Tab label="Flights"
