@@ -78,10 +78,7 @@ class App extends React.Component {
       data: {userLocation: this.state.userLocation, destination: chosenRequest.obj}
     }).then(function(response){
       console.log("response",response);
-      setTimeout(function(){
-        this.setState({loading:false, apiResponse: response, directions: response.directions});
-        console.log(this.state.directions)
-      }.bind(this), 1000);
+      this.setState({loading:false, apiResponse: response});
     }.bind(this));
   }
 
@@ -100,7 +97,7 @@ class App extends React.Component {
             >
               <div style={{marginLeft:200, marginRight:200}}>
                 <List>
-                  {this.state.directions.map((directions) =>
+                  {this.state.apiResponse.directions.map((directions) =>
                     <div>
                     <ListItem primaryText={directions.html_instructions.replace(/<(?:.|\n)*?>/gm, '')} secondaryText={
                       <p>
