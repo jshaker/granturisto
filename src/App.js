@@ -90,7 +90,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.direction)
     if(this.state.apiResponse){
       return (
         <MuiThemeProvider>
