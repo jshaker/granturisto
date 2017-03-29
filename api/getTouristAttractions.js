@@ -1,8 +1,8 @@
 import https from 'https';
 
-export default function({destinationLatitude,destinationLongitude}){
+export default function(city){
   return new Promise(function(resolve,reject){
-    var req = https.get(`http://www.tixik.com/api/nearby?lat=${destinationLatitude}&lng=${destinationLongitude}&limit=20&key=demo`, function(response){
+    var req = https.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${city}+point+of+interest&language=en&key=AIzaSyCp6lahESZxAp0LSXxyUrWXFy1KkGICDws`, function(response){
       var body = '';
       response.on('data', function(d) {
         body += d;
@@ -15,7 +15,7 @@ export default function({destinationLatitude,destinationLongitude}){
         catch(e){
           reject(e);
         }
-        resolve(parsed.results[0]);
+        resolve(parsed.results);
       });
     });
     req.on('error', function(err) {
