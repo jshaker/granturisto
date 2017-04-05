@@ -7,6 +7,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
+import moment from 'moment';
 
 const styles = {
   container: {
@@ -83,7 +84,7 @@ class App extends React.Component {
   }
 
   clearData(){
-    this.setState({apiResponse: null});
+    this.setState({apiResponse: null,tabIndex: 'Airport Directions'});
   }
 
   render() {
@@ -115,10 +116,20 @@ class App extends React.Component {
                  icon={<FontIcon className="material-icons">flight</FontIcon>}
             >
               <div>
-                <h2 style={styles.headline}>Flights</h2>
-                <p>
-                  TODO
-                </p>
+              <div style={{marginLeft:200, marginRight:200}}>
+              <List>
+                {this.state.apiResponse.flights.map((flights) =>
+                  <div>
+                  <ListItem primaryText={<p>{flights.MinPrice}$ - Direct: {flights.Direct ? "Yes" : "No"}</p>} secondaryText={
+                    <p>
+                      <span style={{color: '#1976D2'}}>{moment(flights.OutboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")} ------- {moment(flights.InboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")}</span>
+                    </p>
+                  } />
+                  <Divider />
+                  </div>
+                )}
+              </List>
+              </div>
               </div>
             </Tab>
             <Tab label="Hotels"
@@ -126,10 +137,20 @@ class App extends React.Component {
                  icon={<FontIcon className="material-icons">hotel</FontIcon>}
             >
               <div>
-                <h2 style={styles.headline}>Hotels</h2>
-                <p>
-                  TODO
-                </p>
+                <div style={{marginLeft:200, marginRight:200}}>
+                  <List>
+                    {this.state.apiResponse.hotels.map((hotels) =>
+                      <div>
+                      <ListItem primaryText={hotels.name} secondaryText={
+                        <p>
+                          <span style={{color: '#1976D2'}}>{hotels.rating}/5 - {hotels.vicinity}</span>
+                        </p>
+                      } />
+                      <Divider />
+                      </div>
+                    )}
+                  </List>
+                </div>
               </div>
             </Tab>
             <Tab label="Touristic Attractions"
@@ -137,21 +158,40 @@ class App extends React.Component {
                  icon={<FontIcon className="material-icons">account_balance</FontIcon>}
             >
               <div>
-                <h2 style={styles.headline}>Touristic Attractions</h2>
-                <p>
-                  TODO
-                </p>
+                <div style={{marginLeft:200, marginRight:200}}>
+                <List>
+                  {this.state.apiResponse.touristAttractions.map((touristAttractions) =>
+                    <div>
+                    <ListItem primaryText={touristAttractions.name} secondaryText={
+                      <p>
+                        <span style={{color: '#1976D2'}}>{touristAttractions.rating}/5 - {touristAttractions.formatted_address}</span>
+                      </p>
+                    } />
+                    <Divider />
+                    </div>
+                  )}
+                </List>
+                </div>
               </div>
             </Tab>
             <Tab label="Weather"
                  value="Weather"
                  icon={<FontIcon className="material-icons">wb_sunny</FontIcon>}
             >
-              <div>
-                <h2 style={styles.headline}>Weather</h2>
-                <p>
-                  TODO
-                </p>
+              <div style={{marginLeft:200, marginRight:200}}>
+              <List>
+                {this.state.apiResponse.weather.daily.data.map((data, i) =>
+                  <div>
+                  <ListItem primaryText={<p><span>{moment().add(i, 'days').format('dddd')} --- {data.summary}</span></p>} secondaryText={
+                      <p><span>Max Temperature: {data.temperatureMax} degrees ---
+                      Feels Like Max: {data.apparentTemperatureMax} degrees ---
+                      Chances of Precipitation: {data.precipProbability}% ---
+                      Max Wind Speed: {data.windSpeed} km/h</span></p>
+                  } />
+                  <Divider />
+                  </div>
+                )}
+              </List>
               </div>
             </Tab>
             <Tab label="New Search"
