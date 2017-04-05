@@ -188,6 +188,23 @@ class App extends React.Component {
                 <br></br>
                 <h1>Weekly Summary</h1>
                 <p>{this.state.apiResponse.weather.daily.summary}</p>
+                <br></br>
+                <h1>Daily</h1>
+              </div>
+              <div style={{marginLeft:200, marginRight:200}}>
+              <List>
+                {this.state.apiResponse.weather.daily.data.map((data, i) =>
+                  <div>
+                  <ListItem primaryText={<p><span>{data.summary} --- {moment().add(i, 'days').format('dddd')}</span></p>} secondaryText={
+                      <p><span>Max Temperature: {data.temperatureMax} degrees ---
+                      Feels Like Max: {data.apparentTemperatureMax} degrees ---
+                      Chances of Precipitation: {data.precipProbability}% ---
+                      Wind Speed: {data.windSpeed} km/h</span></p>
+                  } />
+                  <Divider />
+                  </div>
+                )}
+              </List>
               </div>
             </Tab>
             <Tab label="New Search"
