@@ -120,9 +120,9 @@ class App extends React.Component {
               <List>
                 {this.state.apiResponse.flights.map((flights) =>
                   <div>
-                  <ListItem primaryText={<p>{flights.MinPrice}$</p>} secondaryText={
+                  <ListItem primaryText={<p>{flights.MinPrice}$ - Direct: {flights.Direct ? "Yes" : "No"}</p>} secondaryText={
                     <p>
-                      <span style={{color: '#1976D2'}}>{moment(flights.InboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")} ------- {moment(flights.OutboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")}</span>
+                      <span style={{color: '#1976D2'}}>{moment(flights.OutboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")} ------- {moment(flights.InboundLeg.DepartureDate).format("dddd, MMMM Do YYYY")}</span>
                     </p>
                   } />
                   <Divider />
@@ -181,6 +181,10 @@ class App extends React.Component {
               <div style={{textAlign: 'center'}}>
                 <h1>Currently</h1>
                 <p>{this.state.apiResponse.weather.currently.summary}</p>
+                <p>Temperature: {this.state.apiResponse.weather.currently.temperature} degrees</p>
+                <p>Feels Like: {this.state.apiResponse.weather.currently.apparentTemperature} degrees</p>
+                <p>Chances of Precipitation: {this.state.apiResponse.weather.currently.precipProbability}%</p>
+                <p>Wind Speed: {this.state.apiResponse.weather.currently.windSpeed} km/h</p>
                 <br></br>
                 <h1>Weekly Summary</h1>
                 <p>{this.state.apiResponse.weather.daily.summary}</p>
