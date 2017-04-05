@@ -178,19 +178,6 @@ class App extends React.Component {
                  value="Weather"
                  icon={<FontIcon className="material-icons">wb_sunny</FontIcon>}
             >
-              <div style={{textAlign: 'center'}}>
-                <h1>Currently</h1>
-                <p>{this.state.apiResponse.weather.currently.summary}</p>
-                <p>Temperature: {this.state.apiResponse.weather.currently.temperature} degrees</p>
-                <p>Feels Like: {this.state.apiResponse.weather.currently.apparentTemperature} degrees</p>
-                <p>Chances of Precipitation: {this.state.apiResponse.weather.currently.precipProbability}%</p>
-                <p>Wind Speed: {this.state.apiResponse.weather.currently.windSpeed} km/h</p>
-                <br></br>
-                <h1>Weekly Summary</h1>
-                <p>{this.state.apiResponse.weather.daily.summary}</p>
-                <br></br>
-                <h1>Daily</h1>
-              </div>
               <div style={{marginLeft:200, marginRight:200}}>
               <List>
                 {this.state.apiResponse.weather.daily.data.map((data, i) =>
