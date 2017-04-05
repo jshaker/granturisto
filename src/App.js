@@ -195,11 +195,11 @@ class App extends React.Component {
               <List>
                 {this.state.apiResponse.weather.daily.data.map((data, i) =>
                   <div>
-                  <ListItem primaryText={<p><span>{data.summary} --- {moment().add(i, 'days').format('dddd')}</span></p>} secondaryText={
+                  <ListItem primaryText={<p><span>{moment().add(i, 'days').format('dddd')} --- {data.summary}</span></p>} secondaryText={
                       <p><span>Max Temperature: {data.temperatureMax} degrees ---
                       Feels Like Max: {data.apparentTemperatureMax} degrees ---
                       Chances of Precipitation: {data.precipProbability}% ---
-                      Wind Speed: {data.windSpeed} km/h</span></p>
+                      Max Wind Speed: {data.windSpeed} km/h</span></p>
                   } />
                   <Divider />
                   </div>
