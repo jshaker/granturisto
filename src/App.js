@@ -84,7 +84,7 @@ class App extends React.Component {
   }
 
   clearData(){
-    this.setState({apiResponse: null});
+    this.setState({apiResponse: null,tabIndex: 'Airport Directions'});
   }
 
   render() {
