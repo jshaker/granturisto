@@ -6,3 +6,10 @@
 3. Open Git Bash or other command-line tool, and browse to the project directory
 4. Run "npm install" to install the project's dependencies.
 5. Run "npm start" to run the project.
+
+Project made by:
+* Mathieu Diab
+* Eric Gagnon
+* Nicholas Sabelli
+* Jeremie Shaker
+* Patrick Young
