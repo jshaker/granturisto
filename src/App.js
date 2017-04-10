@@ -8,6 +8,7 @@ import FontIcon from 'material-ui/FontIcon';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import moment from 'moment';
+import Logo from '../public/granturisto.png';
 
 const styles = {
   container: {
@@ -18,6 +19,12 @@ const styles = {
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400
+  },
+  logo: {
+    marginTop:'auto',
+    marginBottom: 'auto',
+    marginLeft: '5',
+    marginRight: '5'
   }
 };
 
@@ -214,7 +221,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div style={styles.container}>
-          <h1>Welcome to Gran Turisto</h1>
+          <img src={Logo}/><br/>
           <AutoComplete
             floatingLabelText="Search for your destination"
             filter={function(searchText, key){

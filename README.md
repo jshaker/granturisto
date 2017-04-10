@@ -7,6 +7,8 @@
 4. Run "npm install" to install the project's dependencies.
 5. Run "npm start" to run the project.
 
+For a better understanding of the Mashup, open ssd.png
+
 Project made by:
 * Mathieu Diab
 * Eric Gagnon
