@@ -6,8 +6,8 @@ export default function(req,res){
     host: `www.air-port-codes.com`,
     path: `/api/v1/autocomplete?term=${search}`,
     headers: {
-      "APC-Auth": "2131d6167b",
-      "APC-Auth-Secret": "38342299a3336f0",
+      "APC-Auth": "6a784e1822",
+      "APC-Auth-Secret": "fe1e493bce42670",
       "accept": "application/json",
       "Content-Type": "application/json"
     }
@@ -20,6 +20,7 @@ export default function(req,res){
     });
     response.on('end', function() {
       var parsed = JSON.parse(body);
+      console.log("parsed",parsed);
       if(!parsed.airports){
         res.send([]);
       }
