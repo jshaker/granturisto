@@ -31,6 +31,11 @@ const styles = {
   }
 };
 
+const urls = {
+  local: 'http://localhost:3000',
+  cloud: 'http://ec2-34-209-10-96.us-west-2.compute.amazonaws.com'
+};
+
 //Defining the main React Component
 class App extends React.Component {
 
@@ -71,7 +76,7 @@ class App extends React.Component {
     }
     //Querying places for matching text
     $.ajax({
-      url: 'http://localhost:3000/getPlaces',
+      url: urls.cloud+'/getPlaces',
       type: 'GET',
       data: {
         search: text
@@ -89,7 +94,7 @@ class App extends React.Component {
     }
     //Querying places for matching text
     $.ajax({
-      url: 'http://localhost:3000/getPlaces',
+      url: urls.cloud+'/getPlaces',
       type: 'GET',
       data: {
         search: text
@@ -119,7 +124,7 @@ class App extends React.Component {
     //Display loading animation
     this.setState({loading: true});
     $.ajax({
-      url: 'http://localhost:3000/getTrip',
+      url: urls.cloud+'/getTrip',
       type: 'POST',
       data: {departure: this.state.departure, destination: this.state.destination}
     }).then(function(response){
