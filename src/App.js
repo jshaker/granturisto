@@ -11,6 +11,7 @@ import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import moment from 'moment';
 import Logo from '../public/granturisto.png';
+import Avatar from 'material-ui/Avatar';
 
 //Defining Inline CSS
 const styles = {
@@ -215,11 +216,14 @@ class App extends React.Component {
                 <List>
                   {this.state.apiResponse.touristAttractions.map((touristAttractions) =>
                     <div>
-                    <ListItem primaryText={touristAttractions.name} secondaryText={
-                      <p>
-                        <span style={{color: '#1976D2'}}>{touristAttractions.rating}/5 - {touristAttractions.formatted_address}</span>
-                      </p>
-                    } />
+                    <ListItem leftAvatar={<Avatar src={touristAttractions.icon} />}
+                              primaryText={touristAttractions.name}
+                              secondaryText={
+                                <p>
+                                  <span style={{color: '#1976D2'}}>{touristAttractions.rating}/5 - {touristAttractions.formatted_address}</span>
+                                </p>
+                              }
+                    />
                     <Divider />
                     </div>
                   )}
