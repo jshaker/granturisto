@@ -8,29 +8,28 @@ import getDestinationWeather from './getDestinationWeather';
 import getDestinationHotels from './getDestinationHotels';
 
 export default function (req, res) {
-  const {latitude, longitude} = req.body.userLocation;
-  const nearestAirportReq = {latitude, longitude};
+  const departureIATA = req.body.departure.iata;
+  const departureCity = req.body.departure.city;
   const destinationIATA = req.body.destination.iata;
-  const {city} = req.body.destination;
+  const destinationCity = req.body.destination.city;
 
-  const originPromise = getNearestAirport(nearestAirportReq).then(function (nearestAirport) {
+  const originPromise = Promise.all([getDestinationCoordinates(departureCity),getDestinationCoordinates(departureCity+" "+departureIATA)]).then(function(results) {
+
     const directionsReq = {
-      userLatitude: latitude,
-      userLongitude: longitude,
-      airportLatitude: nearestAirport.geometry.location.lat,
-      airportLongitude: nearestAirport.geometry.location.lng
+      userLatitude: results[0][0].geometry.location.lat,
+      userLongitude: results[0][0].geometry.location.lng,
+      airportLatitude: results[1][0].geometry.location.lat,
+      airportLongitude: results[1][0].geometry.location.lng
     };
 
     return getDirectionsToAirport(directionsReq);
   });
 
-  const flightsPromise = getNearestAirportIATA(nearestAirportReq).then(function(originIATA){
-    return getFlights({originIATA,destinationIATA});
-  });
+  const flightsPromise = getFlights({originIATA: departureIATA,destinationIATA});
 
-  const touristAttractionsPromise = getTouristAttractions(city);
+  const touristAttractionsPromise = getTouristAttractions(destinationCity);
 
-  const destinationWeatherPromise = getDestinationCoordinates(city).then(function (result) {
+  const destinationWeatherPromise = getDestinationCoordinates(destinationCity).then(function (result) {
     const coordinates = {
       latitude: result[0].geometry.location.lat,
       longitude: result[0].geometry.location.lng
@@ -39,7 +38,7 @@ export default function (req, res) {
     return getDestinationWeather(coordinates);
   });
 
-  const destinationHotelPromise = getDestinationCoordinates(city).then(function (result) {
+  const destinationHotelPromise = getDestinationCoordinates(destinationCity).then(function (result) {
     const coordinates = {
       latitude: result[0].geometry.location.lat,
       longitude: result[0].geometry.location.lng,
@@ -58,7 +57,6 @@ export default function (req, res) {
       hotels: results[4]
     };
 
-    console.log("result",result);
     res.send(result);
   });
 }

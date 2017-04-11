@@ -20,7 +20,6 @@ export default function(req,res){
     });
     response.on('end', function() {
       var parsed = JSON.parse(body);
-      console.log("parsed",parsed);
       if(!parsed.airports){
         res.send([]);
       }

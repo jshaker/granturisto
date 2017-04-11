@@ -8,6 +8,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
+import RaisedButton from 'material-ui/RaisedButton';
 import moment from 'moment';
 import Logo from '../public/granturisto.png';
 
@@ -37,25 +38,23 @@ class App extends React.Component {
     super(props,context);
     //Defining initial state variables
     this.state = {
-      dataSource: [],
-      userLocation: null,
+      dataSource1: [],
+      dataSource2: [],
+      departure: null,
+      destination: null,
       loading: false,
       tabIndex: 'Airport Directions',
       apiResponse: null,
       directions: null
     };
     //Binding class method to scope "this"
-    this.handleUpdateInput = this.handleUpdateInput.bind(this);
-    this.onNewRequest = this.onNewRequest.bind(this);
+    this.handleUpdateInput1 = this.handleUpdateInput1.bind(this);
+    this.handleUpdateInput2 = this.handleUpdateInput2.bind(this);
+    this.onNewRequest1 = this.onNewRequest1.bind(this);
+    this.onNewRequest2 = this.onNewRequest2.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.clearData = this.clearData.bind(this);
-  }
-
-  componentDidMount(){
-    //Asking user for location after the component is mounted
-    navigator.geolocation.getCurrentPosition(function(location){
-      this.setState({userLocation: location.coords});
-    }.bind(this));
+    this.submitRequest = this.submitRequest.bind(this);
   }
 
   //On click for tabbed view
@@ -66,7 +65,7 @@ class App extends React.Component {
   }
 
   //Autocomplete on change
-  handleUpdateInput(text){
+  handleUpdateInput1(text){
     if(text.trim() === ""){
       return;
     }
@@ -79,22 +78,50 @@ class App extends React.Component {
       }
     }).then(function(response){
       //Setting state variable to display in autocomplete
-      this.setState({dataSource: response});
+      this.setState({dataSource1: response});
     }.bind(this));
+  }
 
+  //Autocomplete on change
+  handleUpdateInput2(text){
+    if(text.trim() === ""){
+      return;
+    }
+    //Querying places for matching text
+    $.ajax({
+      url: 'http://localhost:3000/getPlaces',
+      type: 'GET',
+      data: {
+        search: text
+      }
+    }).then(function(response){
+      //Setting state variable to display in autocomplete
+      this.setState({dataSource2: response});
+    }.bind(this));
   }
 
   //Fired when an autocomplete option is clicked
-  onNewRequest(chosenRequest){
+  onNewRequest1(chosenRequest){
     if(typeof chosenRequest !== "object"){
       return;
     }
+    this.setState({departure: chosenRequest.obj});
+  }
+
+  onNewRequest2(chosenRequest){
+    if(typeof chosenRequest !== "object"){
+      return;
+    }
+    this.setState({destination: chosenRequest.obj});
+  }
+
+  submitRequest(){
     //Display loading animation
     this.setState({loading: true});
     $.ajax({
       url: 'http://localhost:3000/getTrip',
       type: 'POST',
-      data: {userLocation: this.state.userLocation, destination: chosenRequest.obj}
+      data: {departure: this.state.departure, destination: this.state.destination}
     }).then(function(response){
       console.log("response",response);
       //Stop loading animation and load api response into state variable
@@ -224,8 +251,15 @@ class App extends React.Component {
         </MuiThemeProvider>
       );
     }
+    const suggestions1 = this.state.dataSource1.map(function(suggestion){
+      return {
+        text: suggestion.name,
+        value: suggestion.name,
+        obj: suggestion
+      };
+    });
 
-    const suggestions = this.state.dataSource.map(function(suggestion){
+    const suggestions2 = this.state.dataSource2.map(function(suggestion){
       return {
         text: suggestion.name,
         value: suggestion.name,
@@ -239,16 +273,30 @@ class App extends React.Component {
         <div style={styles.container}>
           <img src={Logo}/><br/>
           <AutoComplete
+            floatingLabelText="Search for your departure"
+            filter={function(searchText, key){
+              return true;
+            }}
+            maxSearchResults={10}
+            dataSource={suggestions1}
+            onUpdateInput={this.handleUpdateInput1}
+            onNewRequest={this.onNewRequest1}
+          /><br/>
+          <AutoComplete
             floatingLabelText="Search for your destination"
             filter={function(searchText, key){
               return true;
             }}
             maxSearchResults={10}
-            dataSource={suggestions}
-            onUpdateInput={this.handleUpdateInput}
-            onNewRequest={this.onNewRequest}
-            disabled={!this.state.userLocation}
-          />
+            dataSource={suggestions2}
+            onUpdateInput={this.handleUpdateInput2}
+            onNewRequest={this.onNewRequest2}
+          /><br/>
+          <RaisedButton label="Submit"
+                        primary={true}
+                        disabled={!this.state.departure || !this.state.destination || this.state.loading}
+                        onTouchTap={this.submitRequest}
+          /><br/>
           <div>
             {this.state.loading ? <CircularProgress size={80} thickness={5} /> : null}
           </div>
